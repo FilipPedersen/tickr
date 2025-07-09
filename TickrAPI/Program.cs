@@ -1,8 +1,20 @@
+using Supabase;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpClient<FinancialDataService>();
+builder.Services.AddSingleton(sp => 
+{
+    var client = new Client("https://tshupdoxlczxihaoitcg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzaHVwZG94bGN6eGloYW9pdGNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE5MTExMzUsImV4cCI6MjA2NzQ4NzEzNX0.4fI7ZNj5YE15wSYSqm9ZmzT24JPfvnj6-qY3mL5RLPc");
+    client.InitializeAsync().GetAwaiter().GetResult();
+    return client;
+});
+
+    // new SupabaseService("https://tshupdoxlczxihaoitcg.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzaHVwZG94bGN6eGloYW9pdGNnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE5MTExMzUsImV4cCI6MjA2NzQ4NzEzNX0.4fI7ZNj5YE15wSYSqm9ZmzT24JPfvnj6-qY3mL5RLPc"));
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -27,11 +39,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

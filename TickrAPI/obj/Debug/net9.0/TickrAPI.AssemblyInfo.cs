@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TickrAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+080ffa904eb4945e7886df6e0f6749ee22965f85")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8e2899eaab3462754041350df3f4d7d1e365a03f")]
 [assembly: System.Reflection.AssemblyProductAttribute("TickrAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TickrAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
