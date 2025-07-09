@@ -19,6 +19,7 @@ builder.Services.AddSingleton(sp =>
 builder.Services.AddOpenApi();
 
 var allowedOrigins = builder.Configuration.GetValue<string>("allowedOrigins")!.Split(",");
+builder.Services.Configure<FinancialModelingPrepSettings>(builder.Configuration.GetSection("financialModelingPrep"));
 
 builder.Services.AddCors(
     options =>
@@ -43,3 +44,9 @@ app.UseCors();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+public class FinancialModelingPrepSettings
+{
+    public string ApiKey { get; set; } = String.Empty;
+    public string BaseUrl { get; set; } = String.Empty;
+}

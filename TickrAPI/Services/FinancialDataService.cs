@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using System.Text.Json;
+using Microsoft.Extensions.Options;
 using Supabase;
 using Supabase.Interfaces;
 using TickrAPI.Models;
@@ -9,10 +10,15 @@ public class FinancialDataService
     private readonly HttpClient _httpClient;
     private readonly Client _supabaseClient;
 
-    public FinancialDataService(HttpClient httpClient, Client supabaseClient)
+    private readonly string _baseUrl;
+    private readonly string _apiKey;
+
+    public FinancialDataService(HttpClient httpClient, Client supabaseClient, IOptions<FinancialModelingPrepSettings> settings)
     {
         _httpClient = httpClient;
         _supabaseClient = supabaseClient;
+        _baseUrl = settings.Value.BaseUrl;
+        _apiKey = settings.Value.ApiKey;
     }
 
         public async Task<FinancialData> GetFinancialDataAsync(string symbol)
@@ -34,12 +40,14 @@ public class FinancialDataService
                 .Select(x => JsonSerializer.Deserialize<IncomeStatement>(x.Data))
                 .ToList();
 
+            var apikey = _apiKey;
+
             if (yearlyData.Count == 0)
             {
                 try
                 {
                     yearlyData = await _httpClient.GetFromJsonAsync<List<IncomeStatement?>>(
-                        $"https://financialmodelingprep.com/stable/income-statement?symbol=AAPL&apikey") ?? [];
+                        $"https://financialmodelingprep.com/stable/income-statement?symbol=${symbol}&apikey=${_apiKey}") ?? [];
 
                     foreach (var item in yearlyData)
                     {
