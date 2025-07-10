@@ -1,0 +1,7 @@
+<div
+  class="flex flex-col py-1 px-3 text-right rounded-lg"
+  [class]="{'bg-green-400/5': change() > 0, 'bg-red-400/5': change() < 0}"
+>
+  {{title()}}
+  <span [class]="changeClass">{{change()}}%</span>
+</div>
