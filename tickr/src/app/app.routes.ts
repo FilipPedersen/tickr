@@ -9,6 +9,12 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: Dashboard,
+    loadComponent: () =>
+      import('./components/dashboard/dashboard').then((m) => m.Dashboard),
+  },
+  {
+    path: 'ticker/:symbol',
+    loadComponent: () =>
+      import('./components/ticker/ticker').then((m) => m.Ticker),
   },
 ];

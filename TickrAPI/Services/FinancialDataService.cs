@@ -3,25 +3,34 @@ using System.Text.Json;
 using Microsoft.Extensions.Options;
 using Supabase;
 using Supabase.Interfaces;
+using TickrAPI.Converters;
 using TickrAPI.Models;
 
 public class FinancialDataService
 {
     private readonly HttpClient _httpClient;
     private readonly Client _supabaseClient;
+    private readonly ChartDataConverter _converter;
 
     private readonly string _baseUrl;
     private readonly string _apiKey;
 
-    public FinancialDataService(HttpClient httpClient, Client supabaseClient, IOptions<FinancialModelingPrepSettings> settings)
+    public FinancialDataService(HttpClient httpClient, Client supabaseClient, IOptions<FinancialModelingPrepSettings> settings, ChartDataConverter converter)
     {
         _httpClient = httpClient;
         _supabaseClient = supabaseClient;
         _baseUrl = settings.Value.BaseUrl;
         _apiKey = settings.Value.ApiKey;
+        _converter = converter;
     }
 
-        public async Task<FinancialData> GetFinancialDataAsync(string symbol)
+    public async Task<ChartData> GetChartDataAsync(string symbol)
+    {
+        var financialData = await GetFinancialDataAsync(symbol); 
+        return _converter.ConvertToChartData(financialData, symbol);
+    }
+    
+    public async Task<FinancialData> GetFinancialDataAsync(string symbol)
     {
         try
         {
@@ -40,7 +49,6 @@ public class FinancialDataService
                 .Select(x => JsonSerializer.Deserialize<IncomeStatement>(x.Data))
                 .ToList();
 
-            var apikey = _apiKey;
 
             if (yearlyData.Count == 0)
             {
@@ -95,7 +103,7 @@ public class FinancialDataService
             //     }
             // }
 
-            return new FinancialData
+           return new FinancialData
             {
                 YearlyIncomeStatements = yearlyData,
                 QuarterlyIncomeStatements = quarterlyData

@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-4">
   <mat-card class="flex items-center">
-    <mat-form-field appearance="outline" class="pt-5 w-100">
+    <mat-form-field appearance="outline" class="w-100 pt-5">
       <input matInput placeholder="Search ticker" />
     </mat-form-field>
   </mat-card>
@@ -13,7 +13,12 @@
     </mat-card-header>
     <mat-card-content>
       @for(ticker of recentSearches(); track ticker) {
-      <div>{{ ticker }}</div>
+      <p
+        class="cursor-pointer rounded p-2 hover:bg-neutral-800/80"
+        [routerLink]="['/ticker', ticker]"
+      >
+        {{ ticker }}
+      </p>
       }
     </mat-card-content>
   </mat-card>
