@@ -1,6 +1,6 @@
-import config from '../../.prettierrc.json' with { type: 'json' };
+import config from '../../.prettierrc.json' with { type: 'json' }
 
 export default {
-  ...config,
-  tailwindStylesheet: './src/style.scss',
-};
+    ...config,
+    tailwindStylesheet: './src/style.scss',
+}
