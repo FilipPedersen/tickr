@@ -58,16 +58,41 @@ export class Chart {
             const data = this.chartData()
             if (data) {
                 this.chartConfig().data.labels = data.chartView.labels.reverse()
-                this.chartConfig().data.datasets = [
-                    {
-                        label: data.name,
-                        data: data.chartView.data.reverse(),
-                        backgroundColor: this.color()?.color,
-                        borderColor: this.color()?.border,
-                        borderWidth: 1,
-                    },
-                ]
+                const ctx = (
+                    document.querySelector("canvas") as HTMLCanvasElement
+                )?.getContext("2d")
+                if (ctx) {
+                    const gradient = ctx.createLinearGradient(
+                        0,
+                        0,
+                        0,
+                        ctx.canvas.height
+                    )
+                    gradient.addColorStop(
+                        0,
+                        this.color()?.color || "rgba(0,0,0,0)"
+                    )
+                    gradient.addColorStop(1, "rgba(255,255,255,0)")
+
+                    this.chartConfig().data.datasets = [
+                        {
+                            label: this.formatLabel(data.name),
+                            data: data.chartView.data.reverse(),
+                            backgroundColor: gradient,
+                            borderColor: this.color()?.border,
+                            borderWidth: 1,
+                        },
+                    ]
+                }
             }
         })
+    }
+
+    formatLabel(label: string): string {
+        if (!label) return ""
+        return label
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, (str) => str.toUpperCase())
+            .trim()
     }
 }

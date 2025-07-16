@@ -1,0 +1,11 @@
+<div class="my-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    @for (chart of getChartData(); track chart; let i = $index) {
+    <div class="col-span-1 w-full">
+        <app-chart
+            class="h-auto w-full shadow-xl"
+            [chartData]="chart"
+            [color]="chartColors[i]"
+        ></app-chart>
+    </div>
+    }
+</div>

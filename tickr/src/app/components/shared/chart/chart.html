@@ -1,6 +1,6 @@
 <mat-card appearance="outlined">
     <mat-card-header>
-        <h2>{{chartData()?.name}}</h2>
+        <h2>{{formatLabel(chartData()?.name ?? "")}}</h2>
     </mat-card-header>
     <mat-card-content class="w-full">
         <canvas

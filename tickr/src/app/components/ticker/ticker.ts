@@ -1,26 +1,22 @@
 import { Component, inject, signal } from "@angular/core"
 import {
     ChartData,
-    ChartView,
     FinancialApiService,
-    Metric,
-    MetricChartView,
 } from "../../services/financial-api.service"
 import { of } from "rxjs"
-import { Chart } from "../shared/chart/chart"
-import { chartColors } from "../../helpers/chart-config-helper"
+import { Overview } from "./overview/overview"
+import { MatTabsModule } from "@angular/material/tabs"
+import { Summary } from "../shared/summary/summary"
 
 @Component({
     selector: "app-ticker",
-    imports: [Chart],
+    imports: [Overview, MatTabsModule, Summary],
     templateUrl: "./ticker.html",
     styleUrl: "./ticker.scss",
 })
 export class Ticker {
     apiService = inject(FinancialApiService)
     chartData = signal<ChartData | null>(null)
-    viewType: "yearly" | "quarterly" = "yearly"
-    chartColors = chartColors
 
     ngOnInit() {
         this.loadData()
@@ -39,15 +35,6 @@ export class Ticker {
             console.log("Financial Data:", data)
             this.chartData.set(data)
         })
-    }
-
-    getChartData(): Metric[] | null {
-        if (!this.chartData()) {
-            return null
-        }
-        return this.viewType === "yearly"
-            ? (this.chartData()?.yearly.metrics ?? null)
-            : (this.chartData()?.quarterly.metrics ?? null)
     }
 }
 
